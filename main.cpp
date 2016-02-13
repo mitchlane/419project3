@@ -3,44 +3,28 @@
 #include <errno.h>
 #include <string>
 #include <vector>
-#include "minicsv.h"
 #include <iostream>
+#include "minicsv.h"
+#include "DataItems.hpp"
 using namespace std;
 using namespace csv;
 
-typedef struct airport
-{
-  vector<int> aid;
-  vector<std::string> name;
-  vector<std::string> city;
-//  std::vector<std::string> country;
-  vector<std::string> code;
-  vector<double> lat;
-  vector<double> lon;
-}airport;
-
-typedef struct route{
-//  std::vector<std::string> code;
-  vector<int> id;
-  vector<int> sourceID;
-  vector<int> destID;
-  
-}route;
-
 int main(int argc, char *argv[])
 {
+  route r;
+  
   airport ap = {vector<int>(10000), vector<string>(10000),
                 vector<string>(10000), vector<string>(10000),
                 vector<double>(10000), vector<double>(10000)};
 
   int count = 0;
-  csv::ifstream is("airports.dat", std::ios_base::in);
-  is.set_delimiter(',');
+  csv::ifstream is("airports.dat");
+  is.set_delimiter(',', "$$");
   int tempID;
   string tempName, tempCity, tempCode, tempBlank;
-  double tempLat, tempLong, tempBlankDouble;
+  double tempLat, tempLon, tempBlankDouble;
   
-  if(is.to_open())
+  if(is.is_open())
   {
     while(is.read_line())
     {

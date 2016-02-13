@@ -16,11 +16,7 @@ int main(int argc, char *argv[])
   ParseAndWrite paw;
   Route r;
   Airport ap;
-/*
-  airport ap = {vector<int>(10000), vector<string>(10000),
-                vector<string>(10000), vector<string>(10000),
-                vector<double>(10000), vector<double>(10000)};
-*/
+
   paw.parse(&r, &ap);
 
   

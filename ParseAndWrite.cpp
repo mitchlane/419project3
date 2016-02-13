@@ -8,19 +8,37 @@ ParseAndWrite::ParseAndWrite()
 void ParseAndWrite::parse(Route* r, Airport* ap)
 {
   int count = 0;
-  csv::ifstream is("airports.dat");
-  is.set_delimiter(',', "$$");
-  int tempID;
-  string tempName, tempCity, tempCode, tempBlank;
-  double tempLat, tempLon, tempBlankDouble;
+  csv::ifstream routeIS("routes.dat");
+  routeIS.set_delimiter(',', "$$");
+  csv::ifstream airportIS("airports.dat");
+  airportIS.set_delimiter(',', "$$");
   
-  if(is.is_open())
+  
+  if(routeIS.is_open())
   {
-    while(is.read_line())
+    string tempID;
+    int tempSource, tempDest;
+    string tempBogus;
+    
+    routeIS >> tempBogus >> tempID >> tempBogus >> tempSource >> tempBogus >> tempDest;
+    
+    while(routeIS.read_line())
     {
-      is >> tempID >> tempName >> tempCity >> tempBlank >> tempCode
-         >> tempBlank >> tempLat >> tempLon >> tempBlankDouble >> tempBlankDouble;
+      
+      (*r).id.push_back(tempID);
       printf("%d\n", tempID);
+    }
+  }
+  
+  if(airportIS.is_open())
+  {
+    int tempID;
+    string tempName, tempCity, tempCode, tempBlank;
+    double tempLat, tempLon, tempBlankDouble;
+    
+    while(airportIS.read_line())
+    {
+      (*ap).aid.push_back(tempID);
     }
   }
 
@@ -30,3 +48,8 @@ void ParseAndWrite::write(Result* res)
 {
 
 }
+
+/*
+      routeIS >> tempID >> tempName >> tempCity >> tempBlank >> tempCode
+         >> tempBlank >> tempLat >> tempLon >> tempBlankDouble >> tempBlankDouble;
+*/

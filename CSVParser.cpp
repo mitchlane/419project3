@@ -1,93 +1,88 @@
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <errno.h>
 #include <string>
 #include <vector>
-#include <Python.h>
+#include "csv.h"
+using namespace std;
+using namespace io;
 
-struct airport
+/**
+ * CSV Reader functions
+template<
+  unsigned column_count,
+  class trim_policy = trim_chars<' ', '\t'>, 
+  class quote_policy = no_quote_escape<','>,
+  class overflow_policy = throw_on_overflow,
+  class comment_policy = no_comment
+>
+class CSVReader{
+public:
+  // Constructors
+  // same as for LineReader
+
+  // Parsing Header
+  void read_header(ignore_column ignore_policy, some_string_type col_name1, some_string_type col_name2, ...);
+  void set_header(some_string_type col_name1, some_string_type col_name2, ...);
+  bool has_column(some_string_type col_name)const;
+
+  // Read
+  bool read_row(ColType1&col1, ColType2&col2, ...);
+
+  // File Location 
+  void set_file_line(unsigned);
+  unsigned get_file_line(unsigned)const;
+  void set_file_name(some_string_type file_name);
+  const char*get_truncated_file_name()const;
+};
+
+*/
+
+typedef struct airport
 {
-  std::vector<int> aid;
-  std::vector<std::string> name;
-  std::vector<std::string> city;
+  vector<int> aid;
+  vector<std::string> name;
+  vector<std::string> city;
 //  std::vector<std::string> country;
-  std::vector<std::string> code;
-  std::vector<double> lat;
-  std::vector<double> lon;
+  vector<std::string> code;
+  vector<double> lat;
+  vector<double> lon;
 }airport;
 
-struct route{
+typedef struct route{
 //  std::vector<std::string> code;
-  std::vector<int> id;
-  std::vector<int> sourceID;
-  std::vector<int> destID;
+  vector<int> id;
+  vector<int> sourceID;
+  vector<int> destID;
   
 }route;
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    PyObject *pName, *pModule, *pDict, *pFunc;
-    PyObject *pArgs, *pValue;
-    int i;
+  airport ap = {vector<int>(10000), vector<string>(10000),
+                vector<string>(10000), vector<string>(10000),
+                vector<double>(10000), vector<double>(10000)};
+  string bogus;
 
-    if (argc < 3) {
-        fprintf(stderr,"Usage: call pythonfile funcname [args]\n");
-        return 1;
-    }
+  CSVReader<12> in("airports.csv");
+  in.set_header("aid", "name", "city", "country", "code", "icao", "lat", "lon", "alt", "timeZone", "dst","tz");
 
-    Py_Initialize();
-    PySys_SetArgv(argc, argv);
-    pName = PyString_FromString(argv[1]);
-    /* Error checking of pName left out */
+  // Forcing me to read in every column...
+ // in.read_header(ignore_extra_column, "aid", "name", "city", "country","code", "icao","lat", "lon", "alt", "timeZone", "dst","tz");
 
-    pModule = PyImport_Import(pName);
-    Py_DECREF(pName);
-
-    if (pModule != NULL) {
-        pFunc = PyObject_GetAttrString(pModule, argv[2]);
-        /* pFunc is a new reference */
-
-        if (pFunc && PyCallable_Check(pFunc)) {
-            pArgs = PyTuple_New(argc - 3);
-            for (i = 0; i < argc - 3; ++i) {
-                pValue = PyInt_FromLong(atoi(argv[i + 3]));
-                if (!pValue) {
-                    Py_DECREF(pArgs);
-                    Py_DECREF(pModule);
-                    fprintf(stderr, "Cannot convert argument\n");
-                    return 1;
-                }
-                /* pValue reference stolen here: */
-                PyTuple_SetItem(pArgs, i, pValue);
-            }
-            pValue = PyObject_CallObject(pFunc, pArgs);
-            Py_DECREF(pArgs);
-            if (pValue != NULL) {
-                printf("Result of call: %ld\n", PyInt_AsLong(pValue));
-                Py_DECREF(pValue);
-            }
-            else {
-                Py_DECREF(pFunc);
-                Py_DECREF(pModule);
-                PyErr_Print();
-                fprintf(stderr,"Call failed\n");
-                return 1;
-            }
-        }
-        else {
-            if (PyErr_Occurred())
-                PyErr_Print();
-            fprintf(stderr, "Cannot find function \"%s\"\n", argv[2]);
-        }
-        Py_XDECREF(pFunc);
-        Py_DECREF(pModule);
-    }
-    else {
-        PyErr_Print();
-        fprintf(stderr, "Failed to load \"%s\"\n", argv[1]);
-        return 1;
-    }
-    Py_Finalize();
-    return 0;
+  int count = 0;
+  printf("here\n");
+  while(in.read_row(ap.aid[count], ap.name[count], ap.city[count], bogus, ap.code[count], bogus, ap.lat[count], ap.lon[count], bogus, bogus, bogus, bogus))
+  {
+    cout << ap.name[count] << endl;
+    ++count;
+  }
+  
+  for(int i : ap.aid)
+  {
+    cout << "aid = " << i << endl;
+  } 
+  
+  return 0;
 }

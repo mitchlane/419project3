@@ -1,13 +1,15 @@
 #include <iostream>
 #include "minicsv.h"
-#include "DataItems.hpp"
+#include "Route.h"
+#include "Airport.h"
+#include "Result.h"
 
 class ParseAndWrite
 {
   public:
-    ParseAndWrite(route* r, airport* ap);
-    void parse();
-    void write(result res);
+    ParseAndWrite();
+    void parse(Route* r, Airport* ap);
+    void write(Result* res);
   
   private:
 };

@@ -5,7 +5,7 @@ ParseAndWrite::ParseAndWrite()
 
 }
 
-void ParseAndWrite::parse(Route* r, Airport* ap)
+void ParseAndWrite::parse(const std::unordered_map<int, int>& r, Airport* ap)
 {
   int count = 0;
   csv::ifstream routeIS("routes.dat");
@@ -24,9 +24,7 @@ void ParseAndWrite::parse(Route* r, Airport* ap)
     
     while(routeIS.read_line())
     {
-      
-      (*r).id.push_back(tempID);
-      printf("%d\n", tempID);
+//      (*r).id.push_back(tempID);
     }
   }
   

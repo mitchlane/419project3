@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 
   paw.parse(r, &ap);
   paw.printRoutes(r);
+  paw.printAirports(&ap);
 
   
   return 0;

@@ -84,26 +84,34 @@ void ParseAndWrite::write(Result* res)
 
 void ParseAndWrite::printRoutes(std::unordered_multimap<int, int>& r)
 {
-    auto it = r.begin();
-    while(it != r.end())
+  cout << endl << "---list of routes---" << endl;
+  cout << "From" << '\t' << "To" << endl;
+  auto it = r.begin();
+  while(it != r.end())
+  {
+    int s = it->first;
+    if(r.count(s))
     {
-      int s = it->first;
-      if(r.count(s))
+      auto range = r.equal_range(s);
+      cout << it->first << '\t';
+      
+      for(auto it = range.first; it != range.second; ++it)
       {
-        auto range = r.equal_range(s);
-        cout << it->first << '\t';
-        
-        for(auto it = range.first; it != range.second; ++it)
-        {
-          cout << it->second << ", ";
-        }
-        printf("\n");
+        cout << it->second << ", ";
       }
-      it=r.equal_range(s).second;
+      printf("\n");
     }
+    it=r.equal_range(s).second;
+  }
+  cout << "--------------" << endl;
 }
 
-/*
-      routeIS >> tempID >> tempName >> tempCity >> tempBlank >> tempCode
-         >> tempBlank >> tempLat >> tempLon >> tempBlankDouble >> tempBlankDouble;
-*/
+void ParseAndWrite::printAirports(Airport* a)
+{
+  cout << endl << "---list of airport ids---" << endl;
+  for(auto const& airport : (*a).aid)
+  {
+    cout << airport << endl;
+  }
+  cout << "--------------" << endl;
+}

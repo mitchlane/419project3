@@ -1,3 +1,4 @@
 A,1,AAA,1,BBB,2,,,
 B,2,BBB,2,AAA,1,,,
 A,1,AAA,1,CCC,3,,,
+C,3,CCC,3,BBB,2,,,

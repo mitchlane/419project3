@@ -9,8 +9,9 @@ class ParseAndWrite
 {
   public:
     ParseAndWrite();
-    void parse(const std::unordered_map<int, int>& r, Airport* ap);
+    void parse(std::unordered_multimap<int, int>& r, Airport* ap);
     void write(Result* res);
+    void printRoutes(std::unordered_multimap<int, int>& r);
   
   private:
 };

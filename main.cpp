@@ -14,10 +14,11 @@ using namespace csv;
 int main(int argc, char *argv[])
 {
   ParseAndWrite paw;
-  unordered_map<int, int> r;
+  unordered_multimap<int, int> r;
   Airport ap;
 
   paw.parse(r, &ap);
+  paw.printRoutes(r);
 
   
   return 0;

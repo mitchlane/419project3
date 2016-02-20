@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
   Airport ap;
   
   paw.parse(sc, &ap);
-  //paw.printRoutes(r);
+  paw.printCityMap(sc);
   //paw.printAirports(&ap);
 
   

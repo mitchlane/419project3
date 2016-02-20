@@ -12,8 +12,9 @@ class ParseAndWrite
     ParseAndWrite();
     void parse(std::unordered_map<string, City>& r, Airport* ap);
     void write(Result* res);
-    void printRoutes(std::unordered_multimap<int, int>& r);
+    void printCityMap(std::unordered_map<string, City>& r);
     void printAirports(Airport* a);
   
   private:
+    City createCity(int index, Airport* ap);
 };

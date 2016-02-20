@@ -48,13 +48,31 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
     {
       routeIS >> tempBogus >> tempID >> tempBogus >> tempSource
               >> tempBogus >> tempDest;
-      // insert the data into the routes hashmap
-      //r.insert({tempSource, tempDest});
-      string name = (*ap).city[tempSource];
-      string country = (*ap).country[tempSource];
-      double lat = (*ap).lat[tempSource];
-      double lon = (*ap).lon[tempSource];
-      sc.insert({name, City(name, country, lat, lon)});
+      
+      unordered_map<string, City>::const_iterator got = sc.find((*ap).city[tempSource]);
+      
+      if(got == sc.end())
+      {
+	// Create the source city
+        City source = createCity(tempSource, ap);
+	
+	// Create the destination city
+//	name = (*ap).city[tempDest];
+//	country = (*ap).country[tempDest];
+//	lat = (*ap).lat[tempDest];
+//	lon = (*ap).lon[tempDest];
+//	City dest(name, country, lat, lon);
+        City dest = createCity(tempDest, ap);
+	source.dests.push_back(dest);
+	
+        // Insert the new name and source
+        sc.insert({source.name, source});
+      }
+      else
+      {
+        City dest = createCity(tempDest, ap);
+        sc.at((*ap).city[tempSource]).dests.push_back(dest);
+      }
     }
   }
   
@@ -71,12 +89,22 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
   printf("%d count\n", countT);
 }
 
+City ParseAndWrite::createCity(int index, Airport* ap)
+{
+  string name = (*ap).city[index];
+  string country = (*ap).country[index];
+  double lat = (*ap).lat[index];
+  double lon = (*ap).lon[index];
+  return City(name, country, lat, lon);
+}
+
 void ParseAndWrite::write(Result* res)
 {
 
 }
 
-void ParseAndWrite::printRoutes(std::unordered_multimap<int, int>& r)
+// A debug tool for printing out the results of the routes file
+void ParseAndWrite::printCityMap(std::unordered_map<string, City>& r)
 {
   cout << endl << "---list of routes---" << endl;
   cout << "From" << '\t' << "To" << endl;
@@ -91,7 +119,11 @@ void ParseAndWrite::printRoutes(std::unordered_multimap<int, int>& r)
       
       for(auto it = range.first; it != range.second; ++it)
       {
-        cout << it->second << ", ";
+        for(vector<City>::iterator it2 = it->second.dests.begin(); it2 != it->second.dests.end(); ++it2)
+        {
+          cout << it2->name << ", ";
+        }
+        printf("\n");
       }
       printf("\n");
     }

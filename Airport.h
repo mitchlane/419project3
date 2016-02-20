@@ -3,14 +3,17 @@
 #include <vector>
 #include <string>
 
+#define APNUM 10000
+
 using namespace std;
-struct Airport
+class Airport
 {
-  vector<int> aid;
-  vector<std::string> name;
+  public:
   vector<std::string> city;
-  vector<std::string> code;
+  vector<std::string> country;
   vector<double> lat;
   vector<double> lon;
+  
+    Airport() : city(APNUM), country(APNUM), lat(APNUM), lon(APNUM) {}
 };
 #endif

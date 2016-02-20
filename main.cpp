@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
   unordered_map<string, City> sc;
   unordered_multimap<int, int> r;
   Airport ap;
-
-  paw.parse(r, &ap);
-  paw.printRoutes(r);
-  paw.printAirports(&ap);
+  
+  paw.parse(sc, &ap);
+  //paw.printRoutes(r);
+  //paw.printAirports(&ap);
 
   
   return 0;

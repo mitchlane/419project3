@@ -5,7 +5,7 @@ ParseAndWrite::ParseAndWrite()
 
 }
 
-void ParseAndWrite::parse(std::unordered_multimap<int, int>& r, Airport* ap)
+void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
 {
   string routeFile = "testRoutes.dat";
   string airportFile = "testAirports.dat";
@@ -15,30 +15,27 @@ void ParseAndWrite::parse(std::unordered_multimap<int, int>& r, Airport* ap)
   csv::ifstream airportIS(airportFile.c_str());
   airportIS.set_delimiter(',', "$$");
   
+  // Check that the airports file opened
   if(airportIS.is_open())
   {
     int tempID;
-    string tempName, tempCity, tempCode, tempBlank;
+    string tempCity, tempCountry, tempBlank;
     double tempLat, tempLon, tempBlankDouble;
     
     // Read lines while there are more
     while(airportIS.read_line())
     {
-      airportIS >> tempID >> tempName >> tempCity >> tempBlank >> tempCode
+      airportIS >> tempID >> tempBlank >> tempCity >> tempCountry >> tempBlank
                 >> tempBlank >> tempLat >> tempLon;
       
-      (*ap).aid.push_back(tempID);
-      (*ap).name.push_back(tempName);
-      (*ap).city.push_back(tempCity);
-      (*ap).code.push_back(tempCode);
-      (*ap).lat.push_back(tempLat);
-      (*ap).lon.push_back(tempLon);
+      (*ap).city[tempID] = tempCity;
+      (*ap).country[tempID] = tempCountry;
+      (*ap).lat[tempID] = tempLat;
+      (*ap).lon[tempID] = tempLon;
       
     }
   }
 
-  printf("%d airports\n", (*ap).aid.size());
-  
   // Checks that the routes file opened
   if(routeIS.is_open())
   {
@@ -52,24 +49,26 @@ void ParseAndWrite::parse(std::unordered_multimap<int, int>& r, Airport* ap)
       routeIS >> tempBogus >> tempID >> tempBogus >> tempSource
               >> tempBogus >> tempDest;
       // insert the data into the routes hashmap
-      r.insert({tempSource, tempDest});
+      //r.insert({tempSource, tempDest});
+      string name = (*ap).city[tempSource];
+      string country = (*ap).country[tempSource];
+      double lat = (*ap).lat[tempSource];
+      double lon = (*ap).lon[tempSource];
+      sc.insert({name, City(name, country, lat, lon)});
     }
   }
-
-  printf("%d keys\n", r.size());
-  printf("%d buckets\n", r.bucket_count());
+  
+  printf("%d keys\n", sc.size());
+  printf("%d buckets\n", sc.bucket_count());
   int countT = 0;
-    auto it = r.begin();
-    while(it != r.end())
+    auto it = sc.begin();
+    while(it != sc.end())
     {
-      int ao = it->first;
+      auto ao = it->first;
       ++countT;
-      it=r.equal_range(ao).second;
+      it=sc.equal_range(ao).second;
     }
   printf("%d count\n", countT);
-  
-  // Check that the airports file opened
-
 }
 
 void ParseAndWrite::write(Result* res)
@@ -84,7 +83,7 @@ void ParseAndWrite::printRoutes(std::unordered_multimap<int, int>& r)
   auto it = r.begin();
   while(it != r.end())
   {
-    int s = it->first;
+    auto s = it->first;
     if(r.count(s))
     {
       auto range = r.equal_range(s);
@@ -104,7 +103,7 @@ void ParseAndWrite::printRoutes(std::unordered_multimap<int, int>& r)
 void ParseAndWrite::printAirports(Airport* a)
 {
   cout << endl << "---list of airport ids---" << endl;
-  for(auto const& airport : (*a).aid)
+  for(auto const& airport : (*a).city)
   {
     cout << airport << endl;
   }

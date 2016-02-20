@@ -8,12 +8,14 @@
 #include "ParseAndWrite.hpp"
 #include "Route.h"
 #include "Airport.h"
+#include "City.hpp"
 using namespace std;
 using namespace csv;
 
 int main(int argc, char *argv[])
 {
   ParseAndWrite paw;
+  unordered_map<string, City> sc;
   unordered_multimap<int, int> r;
   Airport ap;
 

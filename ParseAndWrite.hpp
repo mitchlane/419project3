@@ -4,6 +4,7 @@
 #include "Route.h"
 #include "Airport.h"
 #include "Result.h"
+#include "City.hpp"
 
 class ParseAndWrite
 {

@@ -14,7 +14,7 @@ class City
   string country;
   double lat;
   double lon;
-  vector<City> dests;
+  vector<string> dests;
   bool visited;
   
   private:

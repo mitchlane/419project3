@@ -50,6 +50,7 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
               >> tempBogus >> tempDest;
 
       string cc = (*ap).city.at(tempSource) + (*ap).country.at(tempSource);
+      string dcc = (*ap).city.at(tempDest) + (*ap).country.at(tempDest);
       
       unordered_map<string, City>::const_iterator got = sc.find(cc);
       
@@ -58,24 +59,23 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
 	// Create the source city
         City source = createCity(tempSource, ap);
 	
-	// Create the destination city
-        City dest = createCity(tempDest, ap);
-        
         // Adds the new city to the map
-	source.dests.push_back(dest);
+	source.dests.push_back(dcc);
 	
         // Insert the new name and source
         sc.insert({source.name + source.country, source});
       }
       else
       {
-//        if(!find((*ap).dests.begin(), (*ap).dests.end()))
- //       {
-          City dest = createCity(tempDest, ap);
+        vector<string> sDests = sc.at(cc).dests;
+        
+        if(find(sDests.begin(), sDests.end(), dcc) == sDests.end())
+        {
+          string dest = (*ap).city[tempDest] + (*ap).country[tempDest];
           
           // Get the airport at cc in the map and add a destination to it.
 	  sc.at(cc).dests.push_back(dest);
- //       }
+        }
       }
     }
   }
@@ -123,9 +123,9 @@ void ParseAndWrite::printCityMap(std::unordered_map<string, City>& r)
       
       for(auto it = range.first; it != range.second; ++it)
       {
-        for(vector<City>::iterator it2 = it->second.dests.begin(); it2 != it->second.dests.end(); ++it2)
+        for(auto const& dest : it->second.dests)
         {
-          cout << it2->name << ", ";
+          cout << dest.c_str() << ", ";
         }
         printf("\n");
       }

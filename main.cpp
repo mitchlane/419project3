@@ -6,6 +6,7 @@
 #include <iostream>
 #include "minicsv.h"
 #include "ParseAndWrite.hpp"
+#include "TreePruner.hpp"
 #include "Route.h"
 #include "Airport.h"
 #include "City.hpp"
@@ -14,7 +15,8 @@ using namespace csv;
 
 int main(int argc, char *argv[])
 {
-  ParseAndWrite paw;
+  string startCity = "\"city1\"\"country1\"";
+  ParseAndWrite paw("testRoutes.dat", "testAirports.dat");
   unordered_map<string, City> sc;
   unordered_multimap<int, int> r;
   Airport ap;
@@ -23,6 +25,10 @@ int main(int argc, char *argv[])
   paw.printCityMap(sc);
 //  paw.printAirports(&ap);
 
+
+  TreePruner tp(sc);
+  cout << startCity << endl;
+  tp.pruneGraph(startCity);
   
   return 0;
 }

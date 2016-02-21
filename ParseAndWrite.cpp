@@ -1,15 +1,13 @@
 #include "ParseAndWrite.hpp"
 
-ParseAndWrite::ParseAndWrite()
+ParseAndWrite::ParseAndWrite(string routeFile, string airportFile)
 {
-
+  this->routeFile = routeFile;
+  this->airportFile = airportFile;
 }
 
 void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
 {
-  string routeFile = "routes.dat";
-  string airportFile = "airports.dat";
-  
   csv::ifstream routeIS(routeFile.c_str());
   routeIS.set_delimiter(',', "$$");
   csv::ifstream airportIS(airportFile.c_str());

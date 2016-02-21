@@ -10,7 +10,7 @@
 class ParseAndWrite
 {
   public:
-    ParseAndWrite();
+    ParseAndWrite(string rf, string af);
     void parse(std::unordered_map<string, City>& r, Airport* ap);
     void write(Result* res);
     void printCityMap(std::unordered_map<string, City>& r);
@@ -18,4 +18,6 @@ class ParseAndWrite
   
   private:
     City createCity(int index, Airport* ap);
+    string routeFile;
+    string airportFile;
 };

@@ -14,6 +14,6 @@ class Airport
   vector<double> lat;
   vector<double> lon;
   
-    Airport() : city(APNUM), country(APNUM), lat(APNUM), lon(APNUM) {}
+  Airport() : city(APNUM), country(APNUM), lat(APNUM), lon(APNUM) {}
 };
 #endif

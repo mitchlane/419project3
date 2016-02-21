@@ -15,20 +15,23 @@ using namespace csv;
 
 int main(int argc, char *argv[])
 {
-  string startCity = "\"city1\"\"country1\"";
-  ParseAndWrite paw("testRoutes.dat", "testAirports.dat");
+  string startCityTest = "\"city1\"\"country1\"";
+  string startCity = "\"San Luis Obispo\"\"United States\"";
+  ParseAndWrite paw("routes.dat", "airports.dat");
   unordered_map<string, City> sc;
   unordered_multimap<int, int> r;
   Airport ap;
   
   paw.parse(sc, &ap);
-  paw.printCityMap(sc);
+//  paw.printCityMap(sc);
 //  paw.printAirports(&ap);
 
 
   TreePruner tp(sc);
-  cout << startCity << endl;
-  tp.pruneGraph(startCity);
+  tp.dfs(startCity);
+  tp.removeUnvisited();
+  tp.print();
+  tp.dfs(startCity);
   
   return 0;
 }

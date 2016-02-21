@@ -8,8 +8,10 @@ class TreePruner
 {
   public:
     TreePruner(unordered_map<string, City>& sc);
-    void pruneGraph(string start);
+    void dfs(string start);
+    void removeUnvisited();
     void removeDeadEnds();
+    void print();
   private:
     unordered_map<string, City> sc;
     unsigned int count;

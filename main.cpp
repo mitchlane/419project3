@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
   
   paw.parse(sc, &ap);
   paw.printCityMap(sc);
-  //paw.printAirports(&ap);
+//  paw.printAirports(&ap);
 
   
   return 0;

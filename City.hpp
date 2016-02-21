@@ -15,6 +15,7 @@ class City
   double lat;
   double lon;
   vector<City> dests;
+  bool visited;
   
   private:
   

@@ -7,8 +7,8 @@ ParseAndWrite::ParseAndWrite()
 
 void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
 {
-  string routeFile = "testRoutes.dat";
-  string airportFile = "testAirports.dat";
+  string routeFile = "routes.dat";
+  string airportFile = "airports.dat";
   
   csv::ifstream routeIS(routeFile.c_str());
   routeIS.set_delimiter(',', "$$");
@@ -48,8 +48,10 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
     {
       routeIS >> tempBogus >> tempID >> tempBogus >> tempSource
               >> tempBogus >> tempDest;
+
+      string cc = (*ap).city.at(tempSource) + (*ap).country.at(tempSource);
       
-      unordered_map<string, City>::const_iterator got = sc.find((*ap).city[tempSource]);
+      unordered_map<string, City>::const_iterator got = sc.find(cc);
       
       if(got == sc.end())
       {
@@ -57,21 +59,23 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
         City source = createCity(tempSource, ap);
 	
 	// Create the destination city
-//	name = (*ap).city[tempDest];
-//	country = (*ap).country[tempDest];
-//	lat = (*ap).lat[tempDest];
-//	lon = (*ap).lon[tempDest];
-//	City dest(name, country, lat, lon);
         City dest = createCity(tempDest, ap);
+        
+        // Adds the new city to the map
 	source.dests.push_back(dest);
 	
         // Insert the new name and source
-        sc.insert({source.name, source});
+        sc.insert({source.name + source.country, source});
       }
       else
       {
-        City dest = createCity(tempDest, ap);
-        sc.at((*ap).city[tempSource]).dests.push_back(dest);
+//        if(!find((*ap).dests.begin(), (*ap).dests.end()))
+ //       {
+          City dest = createCity(tempDest, ap);
+          
+          // Get the airport at cc in the map and add a destination to it.
+	  sc.at(cc).dests.push_back(dest);
+ //       }
       }
     }
   }
@@ -135,9 +139,9 @@ void ParseAndWrite::printCityMap(std::unordered_map<string, City>& r)
 void ParseAndWrite::printAirports(Airport* a)
 {
   cout << endl << "---list of airport ids---" << endl;
-  for(auto const& airport : (*a).city)
+  for(auto const& city : (*a).city)
   {
-    cout << airport << endl;
+    cout << city.c_str() << endl;
   }
   cout << "--------------" << endl;
 }

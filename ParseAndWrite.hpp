@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <unordered_map>
 #include "minicsv.h"
 #include "Route.h"

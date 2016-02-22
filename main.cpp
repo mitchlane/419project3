@@ -27,11 +27,9 @@ int main(int argc, char *argv[])
 //  paw.printAirports(&ap);
 
 
-  TreePruner tp(sc);
-  tp.dfs(startCity);
-  tp.removeUnvisited();
+  TreePruner tp(sc, startCity);
+  tp.prune();
   tp.print();
-  tp.dfs(startCity);
   
   return 0;
 }

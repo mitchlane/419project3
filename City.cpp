@@ -7,6 +7,7 @@ City::City(string name, string country, double lat, double lon)
   this->lat = lat;
   this->lon = lon;
   visited = false;
+  path = false;
 }
 
 bool City::equals(City c)

@@ -16,6 +16,7 @@ class City
   double lon;
   vector<string> dests;
   bool visited;
+  bool path;
   
   private:
   

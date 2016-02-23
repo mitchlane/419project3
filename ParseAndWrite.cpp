@@ -23,14 +23,21 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
     // Read lines while there are more
     while(airportIS.read_line())
     {
-      airportIS >> tempID >> tempBlank >> tempCity >> tempCountry >> tempBlank
+      airportIS >> tempID >> tempBlank >> tempCity;
+      if(tempCity[0] == '"' && tempCity[tempCity.size() -1] != '"')
+      {
+        string next;
+        airportIS >> next;
+        tempCity += next;
+      }
+      
+      airportIS >> tempCountry >> tempBlank
                 >> tempBlank >> tempLat >> tempLon;
       
       (*ap).city[tempID] = tempCity;
       (*ap).country[tempID] = tempCountry;
       (*ap).lat[tempID] = tempLat;
       (*ap).lon[tempID] = tempLon;
-      
     }
   }
 
@@ -78,8 +85,8 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
     }
   }
   
-  printf("%d keys\n", sc.size());
-  printf("%d buckets\n", sc.bucket_count());
+  //printf("%d keys\n", sc.size());
+ // printf("%d buckets\n", sc.bucket_count());
   int countT = 0;
     auto it = sc.begin();
     while(it != sc.end())
@@ -88,7 +95,7 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
       ++countT;
       it=sc.equal_range(ao).second;
     }
-  printf("%d count\n", countT);
+  //printf("%d count\n", countT);
 }
 
 City ParseAndWrite::createCity(int index, Airport* ap)

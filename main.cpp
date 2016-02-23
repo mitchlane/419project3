@@ -10,6 +10,8 @@
 #include "Route.h"
 #include "Airport.h"
 #include "City.hpp"
+#include "TSPSolver.hpp"
+
 using namespace std;
 using namespace csv;
 
@@ -29,7 +31,9 @@ int main(int argc, char *argv[])
 
   TreePruner tp(sc, startCity);
   tp.prune();
-  tp.print();
+//  tp.print();
+  
+  TSPSolver tsp(sc, startCity);
   
   return 0;
 }

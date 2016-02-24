@@ -10,6 +10,8 @@ TreePruner::TreePruner(unordered_map<string, City>& sc, string start)
 void TreePruner::prune()
 {
   dfs(start);
+
+/*
   removeUnvisited();
   
   sc.at(start).path = true;
@@ -20,6 +22,7 @@ void TreePruner::prune()
       setPathTrue();
     }
   }
+*/
 }
 
 void TreePruner::dfs(string startCity)

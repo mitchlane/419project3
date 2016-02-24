@@ -87,14 +87,14 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
   
   //printf("%d keys\n", sc.size());
  // printf("%d buckets\n", sc.bucket_count());
-  int countT = 0;
+/*  int countT = 0;
     auto it = sc.begin();
     while(it != sc.end())
     {
       auto ao = it->first;
       ++countT;
       it=sc.equal_range(ao).second;
-    }
+    }*/
   //printf("%d count\n", countT);
 }
 
@@ -109,7 +109,31 @@ City ParseAndWrite::createCity(int index, Airport* ap)
 
 void ParseAndWrite::write(Result* res)
 {
+  
+}
 
+void ParseAndWrite::createBackRoute(unordered_map<string, City>& sc)
+{
+ // auto it = sc.begin();
+ // while(it != sc.end())
+  for(auto it = sc.begin(); it != sc.end(); ++it)
+  {
+    City* city = &sc.at(it->first);
+    vector<string>* dests = &city->dests;
+    for(auto dit = dests->begin(); dit != dests->end(); ++dit)
+    {
+      if(sc.count(*dit))
+     {
+	City* dCity = &sc.at(*dit);
+	vector<string>* dDests = &dCity->dests;
+	if(find(dDests->begin(), dDests->end(), it->first) == dDests->end())
+	{
+	  dDests->push_back(it->first);
+	  //cout << "pushing " << *dit << " into " << city->name << "'s dests" << endl;
+	}
+      }
+    }
+  }
 }
 
 // A debug tool for printing out the results of the routes file

@@ -11,16 +11,34 @@ TSPSolver::TSPSolver(unordered_map<string, City>& sc, string start)
 void TSPSolver::solve(string cur)
 {
   City* curCity = &sc.at(cur);
+  curCity->visited = true;
   int citiesVisited = 0;
   double closest = DBL_MAX;
   double currentDist = 0;
+  stack<string> cityStack;
+  cityStack.push(cur);
   string closestCity;
-//  deque <City*> temp;
-  vector<double> destsDists = distsToDests(*curCity);
+  unsigned int cityNum = sc.size();
+  int smallestIndex;
+  cout << cityNum << endl;
   
-  for(int i = 0; i < destsDists.size(); ++i)
+  while(cityNum > 0)
   {
-    cout << destsDists[i] << endl;
+    closest = DBL_MAX;
+    vector<double> destsDists = distsToDests(*curCity);
+    for(int i = 0; i < destsDists.size(); ++i)
+    {
+      cout << destsDists[i] << endl;
+      if(destsDists[i] < closest)
+      {
+        closest = destsDists[i];
+        smallestIndex = i;
+      }
+    }
+    
+    cout << "choosing city " << curCity->dests[smallestIndex] << " with distance " << closest << endl;
+    
+   --cityNum; 
   }
 }
 
@@ -31,8 +49,6 @@ vector<double> TSPSolver::distsToDests(City curCity)
   for(int i = 0; i < curCity.dests.size(); ++i)
   {
     City* dCity = &sc.at(curCity.dests[i]);
-    cout << "dCity lat = " << dCity->lat << endl;
-    cout << "dCity lon = " << dCity->lon << endl;
     double deltaLat = dCity->lat - curCity.lat;
     double deltaLon = dCity->lon - curCity.lon;
     double a = (sin(deltaLat / 2) * sin(deltaLat / 2)) + cos(curCity.lat)

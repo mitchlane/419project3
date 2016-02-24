@@ -11,6 +11,7 @@ void TreePruner::prune()
 {
   dfs(start);
 
+  resetVisited();
 /*
   removeUnvisited();
   

@@ -19,5 +19,6 @@ class TSPSolver
     unordered_map<string, City> sc;
     string start;
     unordered_map<string, double> distsToDests(City curCity);
-
+    double distance(City from, City to);
+    void checkAllVisited();
 };

@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
   string startCityTest = "\"city1\"\"country1\"";
   string startCity = "\"San Luis Obispo\"\"United States\"";
   ParseAndWrite paw("testRoutes.dat", "testAirports.dat");
+ // ParseAndWrite paw("routes.dat", "airports.dat");
   unordered_map<string, City> sc;
   unordered_multimap<int, int> r;
   Airport ap;
@@ -27,10 +28,10 @@ int main(int argc, char *argv[])
   paw.parse(sc, &ap);
 //  paw.printAirports(&ap);
 
-
+  paw.printCityMap(sc);
   TreePruner tp(sc, startCityTest);
   tp.prune();
-  tp.print();
+//  tp.print();
   paw.createBackRoute(sc);
   paw.printCityMap(sc);
   

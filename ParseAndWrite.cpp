@@ -69,6 +69,25 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
 	
         // Insert the new name and source
         sc.insert({source.name + source.country, source});
+
+/*
+        if(sc.count(dcc))
+        {
+          City* temp = &sc.at(dcc);
+          
+          if(find(temp->dests.begin(), temp->dests.end(), cc) == temp->dests.end())
+          {
+	    sc.at(dcc).dests.push_back(cc);
+          }
+        }
+        else
+        {
+          City newDest = createCity(tempDest, ap);
+          cout << "adding new dest: " << newDest.name + newDest.country << endl;
+          newDest.dests.push_back(cc);
+          sc.insert({newDest.name + newDest.country, newDest});
+        }
+*/
       }
       else
       {
@@ -80,6 +99,23 @@ void ParseAndWrite::parse(std::unordered_map<string, City>& sc, Airport* ap)
           
           // Get the airport at cc in the map and add a destination to it.
 	  sc.at(cc).dests.push_back(dest);
+        }
+      }
+      
+      got = sc.find(dcc);
+      
+      if(got == sc.end())
+      {
+        City dest = createCity(tempDest, ap);
+        dest.dests.push_back(cc);
+        sc.insert({dest.name + dest.country, dest});
+      }
+      else
+      {
+        vector<string> cDests = sc.at(dcc).dests;
+        if(find(cDests.begin(), cDests.end(), cc) == cDests.end())
+        {
+          string dest = ap->city[tempSource] + ap->country[tempSource];
         }
       }
     }

@@ -23,7 +23,14 @@ void TreePruner::prune()
       setPathTrue();
     }
   }
+  City c = sc.at("\"Athens\"\"Greece\"");
+  for(auto it = c.dests.begin(); it != c.dests.end(); ++it)
+  {
+    cout << "checking " << *it << endl;
+    City test = sc.at(*it);
+  }
 */
+ //City c = sc.at("Kozani""Greece");
 }
 
 void TreePruner::dfs(string startCity)
@@ -34,6 +41,7 @@ void TreePruner::dfs(string startCity)
   
   for(auto const& dest : (*cur).dests)
   {
+    cout << "----- " << dest << "-----" << endl;
     if(sc.count(dest))
     {
       City next = sc.at(dest);
@@ -45,6 +53,7 @@ void TreePruner::dfs(string startCity)
     else
     {
       vector<string>::iterator remove = find((*cur).dests.begin(), (*cur).dests.end(), dest);
+      cout << "REMOVING " << *remove << endl;
       (*cur).dests.erase(remove);
     }
   }

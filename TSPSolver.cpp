@@ -6,6 +6,7 @@ TSPSolver::TSPSolver(unordered_map<string, City>& sc, string start)
   this->sc = sc;
   this->start = start;
   solve(start);
+  checkAllVisited();
 }
 
 void TSPSolver::solve(string cur)
@@ -26,18 +27,7 @@ void TSPSolver::solve(string cur)
   {
     closest = DBL_MAX;
     unordered_map<string, double> destsDists = distsToDests(*curCity);
-
-/*
-    for(int i = 0; i < destsDists.size(); ++i)
-    {
-      cout << destsDists[i] << endl;
-      if(destsDists[i] < closest)
-      {
-        closest = destsDists[i];
-        smallestIndex = i;
-      }
-    }
-*/    
+    
     if(!destsDists.empty())
     {
       for(auto it = destsDists.begin(); it != destsDists.end(); ++it)
@@ -52,17 +42,30 @@ void TSPSolver::solve(string cur)
      sc.at(closestCity).visited = true;
      currentDist += closest;
      curCity = &sc.at(closestCity);
+     cityStack.push(curCity->name + curCity->country);
 
      --cityNum; 
     }
     else
     {
-      cout << "all cities are visites. " << "need to go back a city." << endl;
-      curCity = &sc.at(cityStack.top());
+      City* to = &sc.at(cityStack.top());
+      currentDist += distance(*curCity, *to);
+      curCity = to;
       cityStack.pop();
+      cout << "going back to city " << to->name << endl;
     }
     
   }
+}
+
+double TSPSolver::distance(City from, City to)
+{
+  double deltaLat = to.lat - from.lat;
+  double deltaLon = to.lon - from.lon;
+  double a = (sin(deltaLat / 2) * sin(deltaLat / 2)) + cos(to.lat)
+	     * cos(from.lat) * (sin(deltaLon / 2) * sin(deltaLon / 2));
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  return 6371 * c;
 }
 
 unordered_map<string, double> TSPSolver::distsToDests(City curCity)
@@ -71,18 +74,25 @@ unordered_map<string, double> TSPSolver::distsToDests(City curCity)
 //  for(auto const& dest : curCity->dests)
   for(int i = 0; i < curCity.dests.size(); ++i)
   {
-    City* dCity = &sc.at(curCity.dests[i]);
-    if(!dCity->visited)
-    {
-      double deltaLat = dCity->lat - curCity.lat;
-      double deltaLon = dCity->lon - curCity.lon;
-      double a = (sin(deltaLat / 2) * sin(deltaLat / 2)) + cos(curCity.lat)
-		 * cos(dCity->lat) * (sin(deltaLon / 2) * sin(deltaLon / 2));
-      double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-      double d = 6371 * c;
-    dtd.insert({dCity->name + dCity->country, d});
+    cout << "looking for " << curCity.dests[i] << endl;
+    City dCity = sc.at(curCity.dests[i]);
+    if(!dCity.visited)
+    { 
+      double dist = distance(curCity, dCity);
+      dtd.insert({dCity.name + dCity.country, dist});
     }
   }
   
   return dtd;
+}
+
+void TSPSolver::checkAllVisited()
+{
+  for(auto const& it : sc)
+  {
+    if(!it.second.visited)
+    {
+      cout << "City " << it.first << " didn't get visited!!!!" << endl;
+    }
+  }
 }

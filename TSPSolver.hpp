@@ -18,6 +18,6 @@ class TSPSolver
     double totalDist;
     unordered_map<string, City> sc;
     string start;
-    vector<double> distsToDests(City curCity);
+    unordered_map<string, double> distsToDests(City curCity);
 
 };

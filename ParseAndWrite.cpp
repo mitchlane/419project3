@@ -145,13 +145,22 @@ City ParseAndWrite::createCity(int index, Airport* ap)
 
 void ParseAndWrite::write(Result* res)
 {
+  csv::ofstream os("result.csv");
+  os.set_delimiter(',', "$$");
   
+  if(os.is_open())
+  {
+    for(int i = 0; i < res->city.size(); ++i)
+    {
+      os << res->city[i] << res->trip[i] << res-> total[i] << NEWLINE;
+    }
+  }
+  os.flush();
+  os.close();
 }
 
-void ParseAndWrite::createBackRoute(unordered_map<string, City>& sc)
+unordered_map<string, City> ParseAndWrite::createBackRoute(unordered_map<string, City>& sc)
 {
- // auto it = sc.begin();
- // while(it != sc.end())
   for(auto it = sc.begin(); it != sc.end(); ++it)
   {
     City* city = &sc.at(it->first);
@@ -170,6 +179,7 @@ void ParseAndWrite::createBackRoute(unordered_map<string, City>& sc)
       }
     }
   }
+  return sc;
 }
 
 // A debug tool for printing out the results of the routes file

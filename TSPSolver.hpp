@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include "City.hpp"
+#include "Result.h"
 #include <unordered_map>
 
 using namespace std;
@@ -12,8 +13,8 @@ class TSPSolver
 {
   public:
     TSPSolver(unordered_map<string, City>& sc, string start);
-    void solve(string curr);
-  
+    Result solve(string curr);
+    Result result;
   private:
     double totalDist;
     unordered_map<string, City> sc;
@@ -21,4 +22,5 @@ class TSPSolver
     unordered_map<string, double> distsToDests(City curCity);
     double distance(City from, City to);
     void checkAllVisited();
+    string findUnvisited();
 };

@@ -7,14 +7,15 @@ TreePruner::TreePruner(unordered_map<string, City>& sc, string start)
   count = 0;
 }
 
-void TreePruner::prune()
+unordered_map<string, City> TreePruner::prune()
 {
   dfs(start);
 
-  resetVisited();
-/*
   removeUnvisited();
+  resetVisited();
+  return sc;
   
+/*
   sc.at(start).path = true;
   for(auto it = sc.begin(); it != sc.end(); ++it)
   {
@@ -41,7 +42,6 @@ void TreePruner::dfs(string startCity)
   
   for(auto const& dest : (*cur).dests)
   {
-    cout << "----- " << dest << "-----" << endl;
     if(sc.count(dest))
     {
       City next = sc.at(dest);
@@ -53,7 +53,6 @@ void TreePruner::dfs(string startCity)
     else
     {
       vector<string>::iterator remove = find((*cur).dests.begin(), (*cur).dests.end(), dest);
-      cout << "REMOVING " << *remove << endl;
       (*cur).dests.erase(remove);
     }
   }

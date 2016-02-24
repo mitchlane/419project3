@@ -16,4 +16,4 @@ all:
 	$(CC) $(CFLAGS) *.cpp -lpthread
 
 clean:
-	rm tsp
+	rm tsp result.csv

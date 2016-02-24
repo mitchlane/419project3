@@ -9,7 +9,7 @@ class TreePruner
 {
   public:
     TreePruner(unordered_map<string, City>& sc, string start);
-    void prune();
+    unordered_map<string, City> prune();
     void dfs(string startCity);
     void removeUnvisited();
     bool isPathToSLO(string from);
